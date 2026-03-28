@@ -83,7 +83,7 @@ const translations = {
       skinSummary: "Polynukleotide und Skinbooster regenerieren die Haut von innen. Für optimale Ergebnisse sind in der Regel 3-4 Sitzungen im Abstand von ca. 3 Wochen empfohlen. Der genaue Behandlungsplan wird individuell besprochen.",
       aftercareTitle: "Nachsorge",
       botoxAftercare: { title: "Nachsorge Botulinumtoxin", points: ["4 Stunden aufrecht bleiben", "24 Stunden kein Sport, keine Sauna", "Behandelte Stellen nicht massieren oder reiben", "Kein Make-up für 4-6 Stunden", "Kostenlose Nachkorrektur nach 14 Tagen möglich"] },
-      lipsAftercare: { title: "Nachsorge Lippen", points: ["Bis zu 72 Stunden Schwellung und Blutergüsse möglich", "24 Stunden kein Sport, keine Sauna", "48 Stunden keinen Lippenstift oder Lipgloss", "Lippen nicht massieren (außer wenn empfohlen)", "Viel Wasser trinken für optimale Hydration", "Kostenlose Nachkorrektur nach 14 Tagen möglich"] },
+      lipsAftercare: { title: "Nachsorge Lippen", points: ["Schwellung und Blutergüsse möglich", "24 Stunden kein Sport, keine Sauna", "48 Stunden keinen Lippenstift oder Lipgloss", "Lippen nicht massieren (außer wenn empfohlen)", "Viel Wasser trinken für optimale Hydration", "Kostenlose Nachkorrektur nach 14 Tagen möglich"] },
       skinAftercare: { title: "Nachsorge Hautverbesserung", points: ["24 Stunden kein Make-up", "24-48 Stunden kein Sport, keine Sauna", "48 Stunden direkte Sonneneinstrahlung meiden", "Sanfte Hautpflege für 3-5 Tage", "Ausreichend Wasser trinken", "Nächste Sitzung nach ca. 3 Wochen"] }
     },
     consent: {
@@ -94,7 +94,7 @@ const translations = {
       clear: "Löschen", submit: "Formular absenden", submitting: "Wird gesendet...",
       signatureRequired: "Bitte unterschreiben Sie das Formular",
       successTitle: "Vielen Dank!",
-      successMessage: "Wir haben Ihre Anfrage erhalten und melden uns bald bei Ihnen."
+      successMessage: "Vielen Dank für Ihr Vertrauen. Ich habe alle Infos erhalten. Eine Bestätigung sollte in Ihrem E-Mail-Postfach sein."
     },
     next: "Weiter", back: "Zurück", required: "* Pflichtfelder", selectTreatment: "Bitte wählen Sie mindestens eine Behandlung"
   },
@@ -171,7 +171,7 @@ const translations = {
       skinSummary: "Полінуклеотиди та скінбустери регенерують шкіру зсередини. Для оптимальних результатів рекомендовано 3-4 сеанси з інтервалом ~3 тижні. План лікування обговорюється індивідуально.",
       aftercareTitle: "Догляд після процедури",
       botoxAftercare: { title: "Догляд після ботулотоксину", points: ["Залишайтеся вертикально 4 години", "Без спорту та сауни 24 години", "Не масажуйте оброблені ділянки", "Без макіяжу 4-6 годин", "Безкоштовна корекція через 14 днів"] },
-      lipsAftercare: { title: "Догляд після губ", points: ["До 72 годин можливий набряк та синці", "Без спорту та сауни 24 години", "48 годин без помади та блиску", "Не масажуйте губи (якщо не рекомендовано)", "Пийте багато води", "Безкоштовна корекція через 14 днів"] },
+      lipsAftercare: { title: "Догляд після губ", points: ["Можливий набряк та синці", "Без спорту та сауни 24 години", "48 годин без помади та блиску", "Не масажуйте губи (якщо не рекомендовано)", "Пийте багато води", "Безкоштовна корекція через 14 днів"] },
       skinAftercare: { title: "Догляд після шкіри", points: ["24 години без макіяжу", "24-48 годин без спорту та сауни", "48 годин уникайте сонця", "М'який догляд за шкірою 3-5 днів", "Пийте достатньо води", "Наступний сеанс через ~3 тижні"] }
     },
     consent: {
@@ -182,7 +182,7 @@ const translations = {
       clear: "Очистити", submit: "Надіслати форму", submitting: "Надсилається...",
       signatureRequired: "Будь ласка, підпишіть форму",
       successTitle: "Дякуємо!",
-      successMessage: "Ми отримали ваш запит і зв'яжемося з вами найближчим часом."
+      successMessage: "Дякую за вашу довіру. Я отримала всю інформацію. Підтвердження має бути у вашій електронній пошті."
     },
     next: "Далі", back: "Назад", required: "* Обов'язкові поля", selectTreatment: "Виберіть хоча б одну процедуру"
   },
@@ -259,7 +259,7 @@ const translations = {
       skinSummary: "Polynucleotides and skinboosters regenerate skin from within. For optimal results, 3-4 sessions at ~3-week intervals are recommended. The exact treatment plan is discussed individually.",
       aftercareTitle: "Aftercare",
       botoxAftercare: { title: "Botulinum Toxin Aftercare", points: ["Stay upright for 4 hours", "No sports or sauna for 24 hours", "Don't massage or rub treated areas", "No makeup for 4-6 hours", "Free touch-up possible after 14 days"] },
-      lipsAftercare: { title: "Lip Aftercare", points: ["Swelling and bruising possible for up to 72 hours", "No sports or sauna for 24 hours", "No lipstick or lip gloss for 48 hours", "Don't massage lips (unless recommended)", "Drink plenty of water for optimal hydration", "Free touch-up possible after 14 days"] },
+      lipsAftercare: { title: "Lip Aftercare", points: ["Swelling and bruising possible", "No sports or sauna for 24 hours", "No lipstick or lip gloss for 48 hours", "Don't massage lips (unless recommended)", "Drink plenty of water for optimal hydration", "Free touch-up possible after 14 days"] },
       skinAftercare: { title: "Skin Treatment Aftercare", points: ["No makeup for 24 hours", "No sports or sauna for 24-48 hours", "Avoid direct sun for 48 hours", "Gentle skincare for 3-5 days", "Drink enough water", "Next session after approx. 3 weeks"] }
     },
     consent: {
@@ -270,7 +270,7 @@ const translations = {
       clear: "Clear", submit: "Submit Form", submitting: "Submitting...",
       signatureRequired: "Please sign the form",
       successTitle: "Thank you!",
-      successMessage: "We have received your inquiry and will contact you soon."
+      successMessage: "Thank you for your trust. I have received all the information. A confirmation should be in your email inbox."
     },
     next: "Next", back: "Back", required: "* Required fields", selectTreatment: "Please select at least one treatment"
   },
@@ -347,7 +347,7 @@ const translations = {
       skinSummary: "Полинуклеотиды и скинбустеры регенерируют кожу изнутри. Для оптимальных результатов рекомендовано 3-4 сеанса с интервалом ~3 недели. План лечения обсуждается индивидуально.",
       aftercareTitle: "Уход после процедуры",
       botoxAftercare: { title: "Уход после ботулотоксина", points: ["Оставайтесь вертикально 4 часа", "Без спорта и сауны 24 часа", "Не массируйте обработанные участки", "Без макияжа 4-6 часов", "Бесплатная коррекция через 14 дней"] },
-      lipsAftercare: { title: "Уход после губ", points: ["До 72 часов возможен отёк и синяки", "Без спорта и сауны 24 часа", "48 часов без помады и блеска", "Не массируйте губы (если не рекомендовано)", "Пейте много воды", "Бесплатная коррекция через 14 дней"] },
+      lipsAftercare: { title: "Уход после губ", points: ["Возможен отёк и синяки", "Без спорта и сауны 24 часа", "48 часов без помады и блеска", "Не массируйте губы (если не рекомендовано)", "Пейте много воды", "Бесплатная коррекция через 14 дней"] },
       skinAftercare: { title: "Уход после кожи", points: ["24 часа без макияжа", "24-48 часов без спорта и сауны", "48 часов избегайте солнца", "Мягкий уход за кожей 3-5 дней", "Пейте достаточно воды", "Следующий сеанс через ~3 недели"] }
     },
     consent: {
@@ -358,7 +358,7 @@ const translations = {
       clear: "Очистить", submit: "Отправить форму", submitting: "Отправляется...",
       signatureRequired: "Пожалуйста, подпишите форму",
       successTitle: "Спасибо!",
-      successMessage: "Мы получили ваш запрос и свяжемся с вами в ближайшее время."
+      successMessage: "Спасибо за ваше доверие. Я получила всю информацию. Подтверждение должно быть в вашем почтовом ящике."
     },
     next: "Далее", back: "Назад", required: "* Обязательные поля", selectTreatment: "Выберите хотя бы одну процедуру"
   }
