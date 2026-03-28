@@ -1,9 +1,11 @@
 "use client";
 import { useState, useRef } from 'react';
+import { jsPDF } from 'jspdf';
 
-// ⚠️ WICHTIG: Ersetze diese ID mit deiner eigenen Formspree-ID!
-// Du bekommst sie unter https://formspree.io nach dem Erstellen eines Formulars
+// Konfiguration
 const FORMSPREE_ID = "mreoeaoz";
+const CLOUDINARY_CLOUD_NAME = "drkele6gg";
+const CLOUDINARY_UPLOAD_PRESET = "ah-aesthetic-forms";
 
 const translations = {
   de: {
@@ -100,7 +102,7 @@ const translations = {
       submitting: "Wird gesendet...",
       signatureRequired: "Bitte unterschreiben Sie das Formular",
       successTitle: "Vielen Dank!",
-      successMessage: "Vielen Dank für das Ausfüllen des Formulars und Ihr Vertrauen. Wir freuen uns auf Ihren Termin!"
+      successMessage: "Vielen Dank für das Ausfüllen des Formulars und Ihr Vertrauen."
     },
     progress: "Fortschritt",
     next: "Weiter",
@@ -202,7 +204,7 @@ const translations = {
       submitting: "Надсилається...",
       signatureRequired: "Будь ласка, підпишіть форму",
       successTitle: "Дякуємо!",
-      successMessage: "Дякуємо за заповнення форми та вашу довіру. Чекаємо на вас!"
+      successMessage: "Дякуємо за заповнення форми та вашу довіру."
     },
     progress: "Прогрес",
     next: "Далі",
@@ -304,7 +306,7 @@ const translations = {
       submitting: "Submitting...",
       signatureRequired: "Please sign the form",
       successTitle: "Thank you!",
-      successMessage: "Thank you for completing the form and your trust. We look forward to your appointment!"
+      successMessage: "Thank you for completing the form and your trust."
     },
     progress: "Progress",
     next: "Next",
@@ -406,7 +408,7 @@ const translations = {
       submitting: "Отправляется...",
       signatureRequired: "Пожалуйста, подпишите форму",
       successTitle: "Спасибо!",
-      successMessage: "Спасибо за заполнение формы и ваше доверие. Ждём вас!"
+      successMessage: "Спасибо за заполнение формы и ваше доверие."
     },
     progress: "Прогресс",
     next: "Далее",
