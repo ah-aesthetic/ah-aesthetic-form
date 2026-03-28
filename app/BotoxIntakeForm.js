@@ -1,11 +1,16 @@
 "use client";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
 
 // Konfiguration
 const FORMSPREE_ID = "mreoeaoz";
 const CLOUDINARY_CLOUD_NAME = "drkele6gg";
 const CLOUDINARY_UPLOAD_PRESET = "ah-aesthetic-forms";
+
+// EmailJS Konfiguration (für Bestätigungs-E-Mail an Kundin)
+const EMAILJS_SERVICE_ID = "service_cjnprwl";
+const EMAILJS_TEMPLATE_ID = "template_r529kri";
+const EMAILJS_PUBLIC_KEY = "ap3zsxj1pgoGQRSWQ";
 
 const translations = {
   de: {
@@ -436,6 +441,18 @@ export default function BotoxIntakeForm() {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
+  // EmailJS laden
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+    script.onload = () => {
+      window.emailjs.init(EMAILJS_PUBLIC_KEY);
+    };
+    return () => document.body.removeChild(script);
+  }, []);
+
   const t = translations[lang];
   const steps = ['personal', 'interests', 'anamnesis', 'info', 'consent'];
 
@@ -698,6 +715,23 @@ export default function BotoxIntakeForm() {
       });
       
       if (response.ok) {
+        // Bestätigungs-E-Mail an Kundin senden via EmailJS
+        try {
+          if (window.emailjs) {
+            await window.emailjs.send(
+              EMAILJS_SERVICE_ID,
+              EMAILJS_TEMPLATE_ID,
+              {
+                to_email: formData.personal.email,
+                to_name: `${formData.personal.firstName} ${formData.personal.lastName}`,
+              }
+            );
+          }
+        } catch (emailError) {
+          console.error('Bestätigungs-E-Mail fehlgeschlagen:', emailError);
+          // Formular trotzdem als erfolgreich markieren
+        }
+        
         setSubmitted(true);
       } else {
         alert('Fehler beim Senden. Bitte versuchen Sie es erneut.');
