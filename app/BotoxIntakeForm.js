@@ -497,39 +497,200 @@ export default function BotoxIntakeForm() {
     if (validateStep()) setStep(s => Math.min(steps.length - 1, s + 1));
   };
 
+  const generatePDF = () => {
+    const pdf = new jsPDF();
+    const t = translations[lang];
+    let y = 20;
+    const lineHeight = 7;
+    const marginLeft = 20;
+    const pageWidth = 170;
+    
+    // Header
+    pdf.setFontSize(18);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('BOTULINUMTOXIN-BEHANDLUNG', marginLeft, y);
+    y += 8;
+    pdf.setFontSize(12);
+    pdf.setFont(undefined, 'normal');
+    pdf.text('Aufklärung & Anamnese', marginLeft, y);
+    y += 6;
+    pdf.setFontSize(10);
+    pdf.text('Anna Hryshchenko • Ästhetische Medizin', marginLeft, y);
+    y += 12;
+    
+    // Persönliche Daten
+    pdf.setFontSize(12);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('PERSÖNLICHE DATEN', marginLeft, y);
+    y += 8;
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    pdf.text(`Name: ${formData.personal.firstName} ${formData.personal.lastName}`, marginLeft, y);
+    y += lineHeight;
+    pdf.text(`Geburtsdatum: ${formData.personal.birthDate}`, marginLeft, y);
+    y += lineHeight;
+    pdf.text(`Adresse: ${formData.personal.address}`, marginLeft, y);
+    y += lineHeight;
+    pdf.text(`Telefon: ${formData.personal.phone}`, marginLeft, y);
+    y += lineHeight;
+    pdf.text(`E-Mail: ${formData.personal.email}`, marginLeft, y);
+    y += lineHeight;
+    pdf.text(`Beruf: ${formData.personal.profession}`, marginLeft, y);
+    y += 12;
+    
+    // Behandlungsinteresse
+    pdf.setFontSize(12);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('BEHANDLUNGSINTERESSE', marginLeft, y);
+    y += 8;
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    const interests = formData.interests.length > 0 ? formData.interests.join(', ') : 'Keine Auswahl';
+    const interestLines = pdf.splitTextToSize(interests, pageWidth);
+    pdf.text(interestLines, marginLeft, y);
+    y += interestLines.length * lineHeight + 8;
+    
+    // Anamnese
+    pdf.setFontSize(12);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('GESUNDHEITSFRAGEBOGEN', marginLeft, y);
+    y += 8;
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    
+    const questions = [
+      { key: 'q1', text: 'Schwanger/Stillend' },
+      { key: 'q2', text: 'Akute Infektionen' },
+      { key: 'q3', text: 'Neurologische Erkrankungen' },
+      { key: 'q4', text: 'Autoimmunerkrankungen' },
+      { key: 'q5', text: 'Onkologische Behandlung' },
+      { key: 'q6', text: 'Blutgerinnungsstörungen' },
+      { key: 'q7', text: 'Diabetes/Chron. Erkrankungen' },
+      { key: 'q9', text: 'Keloidneigung' },
+      { key: 'q10', text: 'Implantate im Behandlungsbereich' },
+      { key: 'q11', text: 'Blutverdünnende Medikamente' },
+    ];
+    
+    questions.forEach(q => {
+      const answer = formData.anamnesis[q.key] === 'yes' ? 'Ja' : formData.anamnesis[q.key] === 'no' ? 'Nein' : '-';
+      const details = formData.anamnesis[q.key + '_details'] || '';
+      pdf.text(`${q.text}: ${answer}${details ? ' (' + details + ')' : ''}`, marginLeft, y);
+      y += lineHeight;
+      if (y > 270) { pdf.addPage(); y = 20; }
+    });
+    
+    y += 4;
+    pdf.text(`Allergien: ${formData.anamnesis.q8 || '-'}`, marginLeft, y);
+    y += lineHeight;
+    const medLines = pdf.splitTextToSize(`Medikamente: ${formData.anamnesis.q12 || '-'}`, pageWidth);
+    pdf.text(medLines, marginLeft, y);
+    y += medLines.length * lineHeight;
+    const prevLines = pdf.splitTextToSize(`Vorherige Behandlungen: ${formData.anamnesis.q13 || '-'}`, pageWidth);
+    pdf.text(prevLines, marginLeft, y);
+    y += prevLines.length * lineHeight;
+    if (formData.anamnesis.q14) {
+      const qLines = pdf.splitTextToSize(`Offene Fragen: ${formData.anamnesis.q14}`, pageWidth);
+      pdf.text(qLines, marginLeft, y);
+      y += qLines.length * lineHeight;
+    }
+    y += 8;
+    
+    if (y > 220) { pdf.addPage(); y = 20; }
+    
+    // Einverständnis
+    pdf.setFontSize(12);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('EINVERSTÄNDNISERKLÄRUNG', marginLeft, y);
+    y += 8;
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    pdf.text('Hiermit bestätige ich:', marginLeft, y);
+    y += lineHeight;
+    const consentText = '• Ich habe die Informationen zur Behandlung gelesen und verstanden.\n• Ich habe alle Fragen wahrheitsgemäß beantwortet.\n• Ich willige in die Behandlung und Datenspeicherung ein.';
+    const consentLines = pdf.splitTextToSize(consentText, pageWidth);
+    pdf.text(consentLines, marginLeft, y);
+    y += consentLines.length * lineHeight + 8;
+    
+    // Unterschrift
+    pdf.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, marginLeft, y);
+    y += lineHeight + 4;
+    pdf.text('Unterschrift:', marginLeft, y);
+    y += 4;
+    
+    if (formData.signature) {
+      try {
+        pdf.addImage(formData.signature, 'PNG', marginLeft, y, 60, 25);
+      } catch (e) {
+        console.error('Fehler beim Hinzufügen der Unterschrift:', e);
+      }
+    }
+    
+    return pdf;
+  };
+
+  const uploadPDFToCloudinary = async (pdfBlob) => {
+    const formDataUpload = new FormData();
+    formDataUpload.append('file', pdfBlob);
+    formDataUpload.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formDataUpload.append('resource_type', 'raw');
+    
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`,
+      { method: 'POST', body: formDataUpload }
+    );
+    
+    const data = await response.json();
+    return data.secure_url;
+  };
+
   const submitForm = async () => {
     if (!validateStep()) return;
     
     setIsSubmitting(true);
     
-    const submitData = {
-      name: `${formData.personal.firstName} ${formData.personal.lastName}`,
-      email: formData.personal.email,
-      telefon: formData.personal.phone,
-      geburtsdatum: formData.personal.birthDate,
-      adresse: formData.personal.address,
-      beruf: formData.personal.profession,
-      behandlungsinteresse: formData.interests.join(', ') || 'Keine Auswahl',
-      schwanger_stillend: formData.anamnesis.q1 === 'yes' ? `Ja - ${formData.anamnesis.q1_details || ''}` : 'Nein',
-      infektionen: formData.anamnesis.q2 === 'yes' ? `Ja - ${formData.anamnesis.q2_details || ''}` : 'Nein',
-      neurologisch: formData.anamnesis.q3 === 'yes' ? `Ja - ${formData.anamnesis.q3_details || ''}` : 'Nein',
-      autoimmun: formData.anamnesis.q4 === 'yes' ? `Ja - ${formData.anamnesis.q4_details || ''}` : 'Nein',
-      onkologisch: formData.anamnesis.q5 === 'yes' ? `Ja - ${formData.anamnesis.q5_details || ''}` : 'Nein',
-      blutgerinnung: formData.anamnesis.q6 === 'yes' ? `Ja - ${formData.anamnesis.q6_details || ''}` : 'Nein',
-      diabetes_chronisch: formData.anamnesis.q7 === 'yes' ? `Ja - ${formData.anamnesis.q7_details || ''}` : 'Nein',
-      allergien: formData.anamnesis.q8,
-      keloid: formData.anamnesis.q9 === 'yes' ? `Ja - ${formData.anamnesis.q9_details || ''}` : 'Nein',
-      implantate: formData.anamnesis.q10 === 'yes' ? `Ja - ${formData.anamnesis.q10_details || ''}` : 'Nein',
-      blutverduenner: formData.anamnesis.q11 === 'yes' ? `Ja - ${formData.anamnesis.q11_details || ''}` : 'Nein',
-      medikamente: formData.anamnesis.q12,
-      vorherige_behandlungen: formData.anamnesis.q13,
-      offene_fragen: formData.anamnesis.q14 || 'Keine',
-      unterschrift_datum: new Date().toLocaleDateString('de-DE'),
-      unterschrift_vorhanden: formData.signature ? 'Ja' : 'Nein',
-      formular_sprache: lang.toUpperCase()
-    };
-    
     try {
+      // PDF generieren
+      const pdf = generatePDF();
+      const pdfBlob = pdf.output('blob');
+      
+      // PDF zu Cloudinary hochladen
+      let pdfUrl = '';
+      try {
+        pdfUrl = await uploadPDFToCloudinary(pdfBlob);
+      } catch (e) {
+        console.error('PDF Upload fehlgeschlagen:', e);
+      }
+      
+      // Formulardaten für E-Mail
+      const submitData = {
+        name: `${formData.personal.firstName} ${formData.personal.lastName}`,
+        email: formData.personal.email,
+        telefon: formData.personal.phone,
+        geburtsdatum: formData.personal.birthDate,
+        adresse: formData.personal.address,
+        beruf: formData.personal.profession,
+        behandlungsinteresse: formData.interests.join(', ') || 'Keine Auswahl',
+        schwanger_stillend: formData.anamnesis.q1 === 'yes' ? `Ja - ${formData.anamnesis.q1_details || ''}` : 'Nein',
+        infektionen: formData.anamnesis.q2 === 'yes' ? `Ja - ${formData.anamnesis.q2_details || ''}` : 'Nein',
+        neurologisch: formData.anamnesis.q3 === 'yes' ? `Ja - ${formData.anamnesis.q3_details || ''}` : 'Nein',
+        autoimmun: formData.anamnesis.q4 === 'yes' ? `Ja - ${formData.anamnesis.q4_details || ''}` : 'Nein',
+        onkologisch: formData.anamnesis.q5 === 'yes' ? `Ja - ${formData.anamnesis.q5_details || ''}` : 'Nein',
+        blutgerinnung: formData.anamnesis.q6 === 'yes' ? `Ja - ${formData.anamnesis.q6_details || ''}` : 'Nein',
+        diabetes_chronisch: formData.anamnesis.q7 === 'yes' ? `Ja - ${formData.anamnesis.q7_details || ''}` : 'Nein',
+        allergien: formData.anamnesis.q8,
+        keloid: formData.anamnesis.q9 === 'yes' ? `Ja - ${formData.anamnesis.q9_details || ''}` : 'Nein',
+        implantate: formData.anamnesis.q10 === 'yes' ? `Ja - ${formData.anamnesis.q10_details || ''}` : 'Nein',
+        blutverduenner: formData.anamnesis.q11 === 'yes' ? `Ja - ${formData.anamnesis.q11_details || ''}` : 'Nein',
+        medikamente: formData.anamnesis.q12,
+        vorherige_behandlungen: formData.anamnesis.q13,
+        offene_fragen: formData.anamnesis.q14 || 'Keine',
+        unterschrift_datum: new Date().toLocaleDateString('de-DE'),
+        unterschrift_bild: formData.signature || 'Keine Unterschrift',
+        pdf_dokument: pdfUrl || 'PDF Upload fehlgeschlagen',
+        formular_sprache: lang.toUpperCase()
+      };
+      
+      // E-Mail über Formspree senden
       const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -542,6 +703,7 @@ export default function BotoxIntakeForm() {
         alert('Fehler beim Senden. Bitte versuchen Sie es erneut.');
       }
     } catch (error) {
+      console.error('Fehler:', error);
       alert('Fehler beim Senden. Bitte versuchen Sie es erneut.');
     }
     
